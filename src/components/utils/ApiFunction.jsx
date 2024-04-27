@@ -4,13 +4,31 @@ export const api = axios.create({
   // axios instance
   baseURL: "http://localhost:8080", // api base url
 });
+
+export const getHeader = () => {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+};
+export const  getMultipartHeader = () => {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
 // Add new room to the database
 export async function addRoom(photo, roomType, roomPrice) {
   const formData = new FormData();
   formData.append("photo", photo);
   formData.append("roomType", roomType);
   formData.append("roomPrice", roomPrice);
-  const response = await api.post("/rooms/add/new-room", formData);
+
+  const response = await api.post("/rooms/add/new-room", formData, {
+      headers: getMultipartHeader(),
+  });
+  console.log(response);
   if (response.status === 200) {
     return true;
   } else {
@@ -39,7 +57,9 @@ export async function getAllRooms() {
 // delete a room
 export async function deleteRoomById(roomId) {
   try {
-    const result = await api.delete(`/rooms/delete/room/${roomId}`);
+    const result = await api.delete(`/rooms/delete/room/${roomId}`, {
+      headers: getHeader(),
+    });
     return result.data;
   } catch (error) {
     throw new Error("error deleting room " + error.message);
@@ -61,13 +81,15 @@ export async function updateRoomById(roomId, roomData) {
   formData.append("roomPrice", roomData.roomPrice);
   formData.append("photo", roomData.photo);
   try {
-    const result = await api.put(`/rooms/update/room/${roomId}`, formData);
+    const result = await api.put(`/rooms/update/room/${roomId}`, formData, {
+      headers: getMultipartHeader(),
+    });
     return result;
   } catch (error) {
     throw new Error("error updating room " + error.message);
   }
 }
-
+// book a room
 export async function bookRoom(roomId, booking) {
   try {
     const response = await api.post(
@@ -83,14 +105,20 @@ export async function bookRoom(roomId, booking) {
     }
   }
 }
+
+// get all bookings
 export async function getAllBookings() {
   try {
-    const response = await api.get("/bookings/all-bookings");
+    const response = await api.get("/bookings/all-bookings", {
+      headers: getHeader(),
+    });
     return response.data;
   } catch (error) {
     throw new Error("Error getting bookings " + error.message);
   }
 }
+
+// search booking by confirmation code
 export async function getBookingByConfirmationCode(confirmationCode) {
   try {
     const result = await api.get(`/bookings/confirmation/${confirmationCode}`);
@@ -103,7 +131,7 @@ export async function getBookingByConfirmationCode(confirmationCode) {
     }
   }
 }
-
+// cancel booking
 export async function cancelBooking(bookingId) {
   try {
     const response = await api.delete(`/bookings/booking/${bookingId}/delete`);
@@ -124,3 +152,70 @@ export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
   }
 }
 
+export async function registration(registration) {
+  try {
+    const response = await api.post("/auth/register-user", registration);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error("Error registering user " + error.message);
+    }
+  }
+}
+export async function loginUser(login) {
+  try {
+    const response = await api.post("/auth/login", login);
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error logging in user " + error);
+    throw new Error("Error logging in user " + error.message);
+  }
+}
+export async function getUserProfile(userId, token) {
+  try {
+    const response = await api.get(`/auth/user/${userId}`, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Error getting user profile " + error.message);
+  }
+}
+export async function deleteUser(userId) {
+  try {
+    const response = await api.delete(`/users/delete/${userId}`, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+export async function getUser(userId, token) {
+  try {
+    const response = await api.get(`/users/${userId}`, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Error getting user " + error.message);
+  }
+}
+export async function getBookingsByUserId(userId, token) {
+  try {
+    const response = await api.get(`/bookings/user/${userId}/bookings`, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching bookings ", error.message);
+    throw new Error("Error fetching bookings " + error.message);
+  }
+}

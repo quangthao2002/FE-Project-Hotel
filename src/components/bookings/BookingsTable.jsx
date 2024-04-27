@@ -1,11 +1,10 @@
 import { parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
 import DataSlider from "../common/DateSlider";
-import ErrorBoundary from "../exeception/ErrorBoundary";
+import moment from "moment";
 
 export const BookingTable = ({ bookingInfo, handleBookingsCancellation }) => {
   const [filteredBookings, setFilteredBookings] = useState(bookingInfo);
-console.log(bookingInfo);
   const filterBookings = (startDate, endDate) => {
     let filtered = bookingInfo;
     if (startDate && endDate) {
@@ -34,7 +33,7 @@ console.log(bookingInfo);
       <table className="table table-bordered table-hover shadow ">
       <thead  >
 					<tr >
-						<th >S/N</th>
+						<th>S/N</th>
 						<th>Booking ID</th>
 						<th>Room ID</th>
 						<th>Room Type</th>
@@ -56,8 +55,8 @@ console.log(bookingInfo);
 							<td>{booking.id}</td>
 							<td>{booking.room.id}</td>
 							<td>{booking.room.roomType}</td>
-							<td>{booking.checkInDate}</td>
-							<td>{booking.checkOutDate}</td>
+							<td>{moment(booking.checkInDate).format("MMM Do, YYYY")}</td>
+							<td>{moment(booking.checkOutDate).format("MMM Do, YYYY")}</td>
 							<td>{booking.guestName}</td>
 							<td>{booking.guestEmail}</td>
 							<td>{booking.numOfAdults}</td>

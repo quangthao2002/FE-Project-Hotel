@@ -50,7 +50,6 @@ const ExistingRoom = () => {
     try {
       const result = await deleteRoomById(roomId);
       if (result === "") {
-        console.log("deleteRoomByIdSuccess");
         setSuccessMessage(`Room with id ${roomId} deleted successfully`);
         fetchRooms();
       } else {

@@ -3,7 +3,7 @@ import {
   cancelBooking,
   getBookingByConfirmationCode,
 } from "../utils/ApiFunction";
-import { set } from "date-fns";
+import moment from "moment";
 
 export const FindBooking = () => {
   const [confirmationCode, setConfirmationCode] = useState("");
@@ -121,10 +121,15 @@ export const FindBooking = () => {
                   {bookingInfo.bookingConfirmationCode}
                 </p>
                 <p>
-                  <strong>Check-in Date:</strong> {bookingInfo.checkInDate}
+                <strong>Room type:</strong> {bookingInfo.room.roomType}
                 </p>
                 <p>
-                  <strong>Check-out Date:</strong> {bookingInfo.checkOutDate}
+                  <strong>Check-in Date:</strong> 
+                  {moment(bookingInfo.checkInDate).format("MMM Do, YYYY")} 
+                </p>
+                <p>
+                  <strong>Check-out Date:</strong> 
+                  {moment(bookingInfo.checkOutDate).format("MMM Do, YYYY")}
                 </p>
                 <p>
                   <strong>Full Name:</strong> {bookingInfo.guestName}

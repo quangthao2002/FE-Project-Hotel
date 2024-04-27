@@ -7,7 +7,6 @@ const RoomSearchResult = ({ results, onClearSearch }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 3;
   const totalResults = results.length;
-  console.log(totalResults)
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -18,7 +17,6 @@ const RoomSearchResult = ({ results, onClearSearch }) => {
   const endIndex = startIndex + resultsPerPage; // 6+3 = 9
   const currentResults = results.slice(startIndex, endIndex); // slice(6,9) => [6,7,8]. lay tu start neu lay tu index tu 0
 
-  console.log(currentResults)
   return (
     <>
       {totalResults > 0 ? (

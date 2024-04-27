@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-// import Logout from "../auth/Logout"
+import Logout from "../auth/Logout";
+import { AuthContext } from "../auth/AuthProvider";
 
 const NavBar = () => {
   const [showAccount, setShowAccount] = useState(false);
@@ -9,7 +10,7 @@ const NavBar = () => {
     setShowAccount(!showAccount);
   };
 
-  const isLoggedIn = localStorage.getItem("token");
+  const isLoggedIn = localStorage.getItem("token") ;
   const userRole = localStorage.getItem("userRole");
 
   return (
@@ -38,18 +39,18 @@ const NavBar = () => {
                 className="nav-link"
                 aria-current="page"
                 to={"/browse-all-rooms"}
-                >
+              >
                 Browse all rooms
               </NavLink>
             </li>
 
-            {/* {isLoggedIn && userRole === "ROLE_ADMIN" && ( */}
+            {isLoggedIn && userRole === "ROLE_ADMIN" && (
               <li className="nav-item">
                 <NavLink className="nav-link" aria-current="page" to={"/admin"}>
                   Admin
                 </NavLink>
               </li>
-            {/* )} */}
+            )}
           </ul>
 
           <ul className="d-flex navbar-nav">
@@ -78,15 +79,15 @@ const NavBar = () => {
                 className={`dropdown-menu ${showAccount ? "show" : ""}`}
                 aria-labelledby="navbarDropdown"
               >
-                {/* {isLoggedIn ? (
-									<Logout />
-								) : ( */}
-                <li>
-                  <Link className="dropdown-item" to={"/login"}>
-                    Login
-                  </Link>
-                </li>
-                {/* )} */}
+                {isLoggedIn ? (
+                  <Logout />
+                ) : (
+                  <li >
+                    <Link className="dropdown-item" to={"/login"}>
+                      Login
+                    </Link>
+                  </li>
+                )}
               </ul>
             </li>
           </ul>

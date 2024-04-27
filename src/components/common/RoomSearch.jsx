@@ -35,7 +35,6 @@ import RoomSearchResult  from "./RoomSearchResult";
     )
       .then((rs) => {
         setAvailableRooms(rs.data);
-        console.log(availableRooms.data)
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
@@ -65,6 +64,7 @@ import RoomSearchResult  from "./RoomSearchResult";
       checkOutDate: "",
       roomType: "",
     });
+    setAvailableRooms([]);
   };
 
   return (

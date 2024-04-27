@@ -14,28 +14,44 @@ import CheckOut from "./components/bookings/CheckOut";
 import BookingSuccess from "./components/bookings/BookingSuccess";
 import { Bookings } from "./components/bookings/Bookings";
 import { FindBooking } from "./components/bookings/FindBooking";
+import Login from "./components/auth/Login";
+import Registration from "./components/auth/Registration";
+import Profile from "./components/auth/Profile";
+import AuthProvider from "./components/auth/AuthProvider";
+import { Toaster } from "react-hot-toast";
+import RequireAuth from "./components/auth/RequireAuth";
 
 function App() {
   return (
     <>
-      <main>
-        <Router>
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/add-room" element={<AddRom />} />
-            <Route path="/edit-room/:roomId" element={<EditRom />} />
-            <Route path="/existing-rooms" element={<ExistingRoom />} />
-            <Route path="/browse-all-rooms" element={<RoomListing />} />
-            <Route path="/book-room/:roomId" element={<CheckOut />} />
-            <Route path="/admin" element={<Admin/>} />
-            <Route path="/booking-success" element={<BookingSuccess/>} />
-            <Route path="/existing-bookings" element={<Bookings/>} />
-            <Route path="/find-booking" element={<FindBooking/>} />
-          </Routes>
-        </Router>
-        <Footer />
-      </main>
+      <AuthProvider>
+        <main>
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/add-room" element={<AddRom />} />
+              <Route path="/edit-room/:roomId" element={<EditRom />} />
+              <Route path="/existing-rooms" element={<ExistingRoom />} />
+              <Route path="/browse-all-rooms" element={<RoomListing />} />
+              <Route path="/book-room/:roomId" element={
+                <RequireAuth>
+                  <CheckOut />
+                </RequireAuth>
+              } />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/booking-success" element={<BookingSuccess />} />
+              <Route path="/existing-bookings" element={<Bookings />} />
+              <Route path="/find-booking" element={<FindBooking />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Registration />} />
+              <Route path="/profile" element={<Profile />} />
+            </Routes>
+          </Router>
+          <Footer />
+        </main>
+      </AuthProvider>
+      <Toaster/>
     </>
   );
 }

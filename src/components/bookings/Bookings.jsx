@@ -22,7 +22,7 @@ export const Bookings = () => {
         });
     }, [1000]);
   }, []);
-
+console.log(bookingInfo,"bookingInfo")
   const handleBookingCancellation = async (bookingId) => {
     try {
       await cancelBooking(bookingId);
@@ -33,13 +33,13 @@ export const Bookings = () => {
     }
   };
   return (
-    <section  style={{ backgroundColor: "whitesmoke" }}>
+    <section style={{ backgroundColor: "whitesmoke" }}>
       <Header title={"Existing Bookings"} />
       {errorMessage && <div className="text-danger">{errorMessage}</div>}
       {isLoading ? (
-           <div>
-           <Spinner size={120} spinnerColor={"gray"} spinnerWidth={2} visible={true}  />
-         </div>
+        <div>
+          <p className="bg-gray-500">Loading...</p>
+        </div>
       ) : (
         <BookingTable
           bookingInfo={bookingInfo}
